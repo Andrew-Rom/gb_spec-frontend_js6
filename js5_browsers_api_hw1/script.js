@@ -171,7 +171,7 @@ workoutsEl.addEventListener("click", ({ target }) => {
 
   let quantityUsersEl = target
     .closest(".workout")
-    .querySelector(".workout_current_participants");
+    ?.querySelector(".workout_current_participants");
 
   if (target.matches("#workout_enroll") && subscribe(selectedWorkout)) {
     let subscribeBtnEl = target.closest("#workout_enroll");
