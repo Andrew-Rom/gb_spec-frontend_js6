@@ -1,0 +1,70 @@
+table {
+    border-collapse: collapse;
+    line-height: 1.1;
+    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+    background: radial-gradient(farthest-corner at 50% 50%, white, #DCECF8);
+    color: #0C213B;
+}
+
+caption {
+    font-family: annabelle, cursive;
+    font-weight: bold;
+    font-size: 2em;
+    padding: 10px;
+    color: #f33a26;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, .3);
+}
+
+th {
+    padding: 10px;
+    border: 1px solid #A9E2CC;
+}
+
+td {
+    text-align: center;
+    font-size: 0.8em;
+    padding: 5px 7px;
+    border: 1px solid #A9E2CC;
+}
+
+#workout_enroll, #workout_cancel {
+	display: inline-block;	
+	box-sizing: border-box;
+	width: 150px;
+	margin: 0 15px 15px 0;
+	outline: none;
+	border: 1px solid #fff;
+	border-radius: 50px;
+	height: 46px;
+	line-height: 46px;
+	font-size: 14px;
+	font-weight: 600;
+	text-decoration: none;
+	color: #444;
+	background-color: #fff;
+	box-shadow: 0 4px 6px rgb(65 132 144 / 10%), 0 1px 3px rgb(0 0 0 / 8%);
+	cursor: pointer;
+	user-select: none;
+	appearance: none;
+	touch-action: manipulation;  
+	vertical-align: top;
+	transition: box-shadow 0.2s;
+}
+
+#workout_enroll:focus-visible, #workout_cancel:focus-visible {
+	border: 1px solid #4c51f9;
+	outline: none;
+}
+#workout_enroll:hover, #workout_cancel:hover {
+	transition: all 0.2s;
+	box-shadow: 0 7px 14px rgb(65 132 144 / 10%), 0 3px 6px rgb(0 0 0 / 8%);
+}
+#workout_enroll:active, #workout_cancel:active {
+	background-color: #808080;
+}
+#workout_enroll:disabled, #workout_cancel:disabled{
+	background-color: #eee;
+	border-color: #eee;
+	color: #444;
+	cursor: not-allowed;
+}
