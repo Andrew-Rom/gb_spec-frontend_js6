@@ -82,7 +82,7 @@ subscridedWorkouts = localStorage
   .split(",")
   .map((item) => Number(item));
 
-function update() {
+function updateLocalStorage() {
   localStorage.setItem(workoutsStorageKey, JSON.stringify(workouts));
   localStorage.setItem(subscridedWorkoutsStorageKey, subscridedWorkouts.join());
 }
@@ -169,67 +169,30 @@ workoutsEl.addEventListener("click", ({ target }) => {
     return item.id === Number(selectedWorkoutId);
   });
 
-  let quantityUsersEl = target
+  const quantityUsersEl = target
     .closest(".workout")
     ?.querySelector(".workout_current_participants");
 
   if (target.matches("#workout_enroll") && subscribe(selectedWorkout)) {
-    let subscribeBtnEl = target.closest("#workout_enroll");
-    let unsubscribeBtnEl = target
+    const subscribeBtnEl = target.closest("#workout_enroll");
+    const unsubscribeBtnEl = target
       .closest(".workout")
       .querySelector("#workout_cancel");
     quantityUsersEl.innerHTML = selectedWorkout.currentParticipants;
     subscribeBtnEl.disabled = true;
     unsubscribeBtnEl.disabled = false;
-    update();
+    updateLocalStorage();
   } else if (
     target.matches("#workout_cancel") &&
     unsubscribe(selectedWorkout)
   ) {
-    let subscribeBtnEl = target
+    const subscribeBtnEl = target
       .closest(".workout")
       .querySelector("#workout_enroll");
-    let unsubscribeBtnEl = target.closest("#workout_cancel");
+    const unsubscribeBtnEl = target.closest("#workout_cancel");
     quantityUsersEl.innerHTML = selectedWorkout.currentParticipants;
     subscribeBtnEl.disabled = false;
     unsubscribeBtnEl.disabled = true;
-    update();
-  }
-});
-
-workoutsEl.addEventListener("change", () => {
-  const selectedWorkoutId = target
-    .closest(".operation_buttons")
-    .parentNode?.querySelector(".workout_id").textContent;
-
-  const selectedWorkout = workouts.find((item) => {
-    return item.id === Number(selectedWorkoutId);
-  });
-
-  let quantityUsersEl = target
-    .closest(".workout")
-    .querySelector(".workout_current_participants");
-
-  if (target.matches("#workout_enroll") && subscribe(selectedWorkout)) {
-    let subscribeBtnEl = target.closest("#workout_enroll");
-    let unsubscribeBtnEl = target
-      .closest(".workout")
-      .querySelector("#workout_cancel");
-    quantityUsersEl.innerHTML = selectedWorkout.currentParticipants;
-    subscribeBtnEl.disabled = true;
-    unsubscribeBtnEl.disabled = false;
-    update();
-  } else if (
-    target.matches("#workout_cancel") &&
-    unsubscribe(selectedWorkout)
-  ) {
-    let subscribeBtnEl = target
-      .closest(".workout")
-      .querySelector("#workout_enroll");
-    let unsubscribeBtnEl = target.closest("#workout_cancel");
-    quantityUsersEl.innerHTML = selectedWorkout.currentParticipants;
-    subscribeBtnEl.disabled = false;
-    unsubscribeBtnEl.disabled = true;
-    update();
+    updateLocalStorage();
   }
 });
