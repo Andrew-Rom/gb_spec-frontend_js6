@@ -1,0 +1,83 @@
+.container {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    justify-content: center;
+    align-items: center;
+}
+
+.container__image {
+    width: 300px;
+    height: 300px;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.fade {
+    animation-name: fade;
+    animation-duration: 1.5s;
+    animation-fill-mode: forwards
+}
+
+@keyframes fade {
+    0% {
+        opacity: 0
+    }
+
+    100% {
+        opacity: 1
+    }
+}
+
+.container__pagination {
+    display: inline-block;
+}
+
+.container__point {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+.active {
+    background-color: #ff8400;
+    color: white;
+    border-radius: 5px;
+}
+
+.container__point:hover:not(.active) {
+    background-color: #ddd;
+    border-radius: 5px;
+}
+
+.container__buttons {
+    display: flex;
+    padding: 15px;
+    gap: 20px;
+}
+
+.container__prev_button, .container__next_button {
+    padding: 0.5rem 1rem;
+    width: 140px;
+    color: #000000;
+    background-color: #ff8400;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.container__prev_button {
+    text-align: right;
+    border-radius: 25px 0 0 25px;
+}
+
+.container__next_button {
+    text-align: left;
+    border-radius: 0 25px 25px 0;
+}
