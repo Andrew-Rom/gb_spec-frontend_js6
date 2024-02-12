@@ -51,7 +51,6 @@ paginationEl.addEventListener("click", ({ target }) => {
     .classList.remove("active");
   target.classList.add("active");
   changeSlides(slideIndex);
-  updatePagination(slideIndex);
 });
 
 function changeSlides() {
