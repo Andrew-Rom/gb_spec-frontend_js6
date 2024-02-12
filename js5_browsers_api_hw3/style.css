@@ -1,0 +1,37 @@
+.container {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    justify-content: center;
+    align-items: center;
+}
+
+.container__image {
+    width: 400px;
+    height: 400px;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.container__rating {
+    display: flex;
+    padding: 15px;
+    gap: 20px;
+    align-items: center;
+}
+
+.container__rating_total,
+.container__rating_like {
+    font-size: 25px;
+}
+
+.container__rating_like {
+    cursor: pointer;
+}
+
+.container__rating_like:hover {
+    filter: drop-shadow( 3px 3px 2px rgba(0, 0, 0, .7))
+}
