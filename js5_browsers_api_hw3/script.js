@@ -22,7 +22,6 @@
 // • Реализуйте возможность просмотра предыдущих фото с сохранением их в истории просмотров в localstorage.
 // • Реализовать все с помощью async/await, без цепочем then.
 
-const limit = 10;
 const imagesStorageKey = "viewedImages";
 let viewedImages;
 let currentObject;
@@ -37,25 +36,25 @@ const imageEl = document.querySelector(".container__image");
 const authorEl = document.querySelector(".container__author");
 const ratingEl = document.querySelector(".container__rating_total");
 const likeEl = document.querySelector(".container__rating_like");
+const historyEl = document.querySelector(".container__history");
 
-const apiUrl = "https://api.unsplash.com/photos/";
+const apiUrl = "https://api.unsplash.com";
 const accessKey = "k5jTTO58_6F3ahigaKHn8kiegfGkwtAXjhBvR744QFE";
 
 const random = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-const url = `${apiUrl}?client_id=${accessKey}&page=${random(
-  0,
-  limit
-)}&per_page=${limit}`;
-
-async function getData(url) {
-  const res = await fetch(url);
+// Получение данных от сервера
+async function getRandomPhoto() {
+  const url = `${apiUrl}/photos/random?client_id=${accessKey}`;
+  const request_options = { method: "GET" };
+  const res = await fetch(url, request_options);
   const data = await res.json();
   return data;
 }
 
+// Отображение данных на странице
 function renderPage(obj) {
   imageEl.style.backgroundImage = `url(${obj.urls.small})`;
   authorEl.innerHTML = `<h3>by ${obj.user.name}</h3>`;
@@ -67,19 +66,34 @@ function renderPage(obj) {
   ratingEl.innerHTML = `Total likes: ${obj.likes}`;
 }
 
-function isViewed(image) {
-  let renderindObject = viewedImages.find((item) => item.id === image.id);
+/* 
+   Реализация "исторической" проверки.
+   Если пользователь уже просматривал полученное изображение, 
+   то статус лайка будет загружен из локального хранилища, 
+   а показатель "лайков" будет определен на основе полученных от сервера данных, 
+   увеличенных на единицу, если пользователь "лайкал" ранее данное фото. 
+   Все обнолвенные данные сохраняются в локальном хранилище.
+   P.S. Так не должно быть, но с авторизацией "завис".
+*/
+function checkViewHistory(randomImage) {
+  let renderindObject = viewedImages.find((item) => item.id === randomImage.id);
   if (!renderindObject) {
-    renderindObject = image;
-    viewedImages.push(image);
+    renderindObject = randomImage;
+    viewedImages.push(randomImage);
   }
   if (renderindObject.liked_by_user) {
-    renderindObject.likes = image.likes + 1;
+    renderindObject.likes = randomImage.likes + 1;
   }
-  saveData();
+  updateLocalStorage(renderindObject);
   return renderindObject;
 }
 
+/* 
+   Функционал "лайка".
+   Когда пользователь кликает "лайк", счетчик увеличивается на единицу, а иконка изменяется. 
+   Повторный клик возвращается все в исходное значение.
+   Каждое дайствие обновляет данныев локальном хранилище.
+*/
 function swapLikes() {
   if (currentObject.liked_by_user) {
     likeEl.innerHTML = `<img class="unliked" src="./assets/like.svg" alt="Like icon">`;
@@ -91,18 +105,27 @@ function swapLikes() {
     currentObject.likes += 1;
   }
   ratingEl.innerHTML = `Total likes: ${currentObject.likes}`;
+  updateLocalStorage(currentObject);
+}
+
+// Обновление (без дубликатов) данных перед сохранением в локальное хранилище
+function updateLocalStorage(image) {
+  const index = viewedImages.findIndex((item) => item.id === image.id);
+  if (index) {
+    viewedImages.splice(index, 1);
+  }
+  viewedImages.push(image);
   saveData();
 }
 
+// Cохранение данных в локальное хранилище
 function saveData() {
   localStorage.setItem(imagesStorageKey, JSON.stringify(viewedImages));
 }
 
 window.addEventListener("DOMContentLoaded", async () => {
   try {
-    const data = await getData(url);
-    const selectedImage = data[random(0, data.length - 1)];
-    currentObject = isViewed(selectedImage);
+    currentObject = checkViewHistory(await getRandomPhoto());
     renderPage(currentObject);
   } catch (error) {
     console.error(error);
@@ -110,3 +133,8 @@ window.addEventListener("DOMContentLoaded", async () => {
 });
 
 likeEl.addEventListener("click", swapLikes);
+
+historyEl.addEventListener("click", () => {
+    currentObject = viewedImages[random(0, viewedImages.length - 1)];;
+    renderPage(currentObject);
+});
