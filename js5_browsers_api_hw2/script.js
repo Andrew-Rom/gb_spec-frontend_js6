@@ -32,7 +32,7 @@ const pointEls = document.querySelectorAll(".container__point");
 
 let slideIndex = 0;
 
-window.addEventListener("resize", drawSlides(slideIndex));
+window.addEventListener("DOMContentLoaded", drawSlides(slideIndex));
 
 prevBtnEl.addEventListener("click", () => {
   slideIndex--;
