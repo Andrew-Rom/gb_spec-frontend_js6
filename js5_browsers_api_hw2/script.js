@@ -40,8 +40,6 @@ prevBtnEl.addEventListener("click", () => {
 });
 
 nextBtnEl.addEventListener("click", () => {
-  slideEl.classList.remove("fade");
-  slideEl.offsetWidth;
   slideIndex++;
   changeSlides(slideIndex);
 });
