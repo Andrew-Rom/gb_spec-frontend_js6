@@ -23,12 +23,10 @@
 // • Реализовать все с помощью async/await, без цепочем then.
 
 const imagesStorageKey = "viewedImages";
-let viewedImages;
+let viewedImages = [];
 let currentObject;
 
-if (!localStorage.getItem(imagesStorageKey)) {
-  viewedImages = [];
-} else {
+if (localStorage.getItem(imagesStorageKey)) {
   viewedImages = JSON.parse(localStorage.getItem(imagesStorageKey));
 }
 
@@ -39,7 +37,7 @@ const likeEl = document.querySelector(".container__rating_like");
 const historyEl = document.querySelector(".container__history");
 
 const apiUrl = "https://api.unsplash.com";
-const accessKey = "k5jTTO58_6F3ahigaKHn8kiegfGkwtAXjhBvR744QFE";
+const accessKey = ""; // Access Key
 
 const random = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -49,9 +47,15 @@ const random = (min, max) => {
 async function getRandomPhoto() {
   const url = `${apiUrl}/photos/random?client_id=${accessKey}`;
   const request_options = { method: "GET" };
-  const res = await fetch(url, request_options);
-  const data = await res.json();
-  return data;
+  try {
+    const res = await fetch(url, request_options);
+    if (!res.ok) {
+      throw new Error("Server error");
+    }
+    return await res.json();
+  } catch (error) {
+    throw error;
+  }
 }
 
 // Отображение данных на странице
@@ -129,12 +133,13 @@ window.addEventListener("DOMContentLoaded", async () => {
     renderPage(currentObject);
   } catch (error) {
     console.error(error);
+    alert(error);
   }
 });
 
 likeEl.addEventListener("click", swapLikes);
 
 historyEl.addEventListener("click", () => {
-    currentObject = viewedImages[random(0, viewedImages.length - 1)];;
-    renderPage(currentObject);
+  currentObject = viewedImages[random(0, viewedImages.length - 1)];
+  renderPage(currentObject);
 });
